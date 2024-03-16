@@ -1,0 +1,118 @@
+#!/bin/bash
+
+fazerbackup() {
+  clear
+  echo "Fazendo bakcup..."
+  cd /root/painelMod
+  #rm -r painelbackup > /dev/null
+  #mkdir painelbackup > /dev/null
+  cp prisma/database.db painelbackup
+  cp .env painelbackup
+  zip -r painelbackup.zip painelbackup
+  mv painelbackup.zip /root
+  echo
+  echo "painelbackup.zip salvo em /root"
+  echo
+  exit 0
+}
+autobakcup() {
+  clear
+  read -p "Deseja ativar o Auto Backup? (s/n) " atb
+  [[ $atb = @(s|S) ]] && {
+    echo "Ativando...."
+    backmod
+    echo
+    echo "Backup de 5 em 5 horas ativo!"
+    exit 0
+  }
+  menuop
+}
+removerpainel() {
+  clear
+  read -p "Deseja remover o painel? (s/n) " rev
+  [[ $rev = @(s|S) ]] && {
+    echo "Removendo..."
+    poff
+    rm /bin/pon /bin/poff /bin/menuop /bin/backmod
+    rm -r /root/painelMod
+    echo "Removido com sucesso!"
+    exit 0
+  }
+  menuop
+}
+restaurarback() {
+  clear
+  [[ ! -e /root/painelbackup.zip ]] && {
+    echo "Arquivo painelbackup.zip não encontrado em /root"
+    sleep 4
+    menuop
+  }
+  read -p "Deseja Restaurar o Backup? (s/n) " rapi
+  [[ $rapi = @(s|S) ]] && {
+    echo "Restaurando..."
+    cd /root/painelMod
+    rm prisma/database.db
+    rm .env
+    cd /root
+    unzip painelbackup.zip
+    cd painelbackup
+    mv database.db ../painelMod/prisma
+    mv .env ../painelMod
+    cd /root
+    rm -r painelbackup
+    pon
+    echo
+    echo "Backup restaurado com sucesso!"
+    exit 0
+  }
+  [[ $rapi = @(n|N) ]] && {
+    echo "Voltando para o menu"
+    sleep 2
+    menuop
+  }
+  menuop
+}
+#[[ ! -e /root/painelMod/src/index.ts ]] && exit 0
+menuop() {
+  clear
+  echo "Bem vindoª ao painelMod menu"
+  echo 
+  echo "1. Fazer backup"
+  echo "2. Restaurar backup"
+  echo "3. Reiniciar painel"
+  echo "4. Ativar Auto backup"
+  echo "5. Remover painel"
+  echo "0. Sair"
+  read -p "> " resp
+  if [[ $resp = "1" ]]; then
+    #statements
+    fazerbackup
+  elif [[ $resp = "2" ]]; then
+    #statements
+    restaurarback
+  elif [[ $resp = "3" ]]; then
+    #statements
+    clear
+    echo "Reiniciando..."
+    pon
+    echo "Reiniciado com sucesso!"
+    sleep 3
+    menuop
+  elif [[ $resp = "4" ]]; then
+    #statements
+    autobakcup
+  elif [[ $resp = "5" ]]; then
+    #statements
+    removerpainel
+  elif [[ $resp = "0" ]]; then
+    #statements
+    echo "Saindo..."
+    exit 0
+  else
+    echo "Opção inválida!"
+    sleep 3
+    clear
+    menuop
+  fi
+}
+menuop

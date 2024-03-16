@@ -1,0 +1,16 @@
+#/bin/bash
+
+random=$(cat /dev/urandom | tr -dc '[:alnum:]' | head -c 5)
+dato=$(date "+%d-%m-%Y_%Hh-%Mm-%Ss")
+
+#Comandos para backup
+cd /root
+[[ ! -e /root/backupAuto ]] && {
+mkdir backupAuto
+(crontab -l > /tmp/apiWaRes; echo "0 */5 * * * backmod" >> /tmp/apiWaRes; cat /tmp/apiWaRes) | crontab -
+}
+cd /root/painelMod
+
+cp prisma/database.db painelbackup
+cp .env painelbackup
+zip -r /root/backupAuto/painelbackup-$dato.zip painelbackup
