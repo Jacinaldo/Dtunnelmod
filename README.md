@@ -28,7 +28,7 @@ apt update -y; apt install wget -y; wget https://raw.githubusercontent.com/Rafae
 Primeiramente clone o projeto
 
 ```sh
-git clone https://github.com/Rafaeloficiall/painelmod.git
+git clone https://github.com/endblack/painelMod.git
 ```
 Agora acesse a pasta ```cd painelMod``` e crie o arquivo ```.env```
 
