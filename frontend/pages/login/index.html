@@ -78,20 +78,18 @@
           </div>
           <div class="__inputs">
             <div class="mb-3 text-start">
-              <label class="form-label ms-1 mb-1" for="Usuário" placeholder="Nome de usuario">Nome de
+              <label class="form-label ms-1 mb-1" for="username" placeholder="Nome de usuario">Nome de
                 usuario</label>
               <input class="form-control bg-dark text-white" id="username" name="username" placeholder="username" required type="text" value>
             </div>
             <div class="mb-4 text-start">
               <label class="form-label ms-1 mb-1" for="password" placeholder="Ex: password" type="password">Senha</label>
-              <input class="form-control bg-dark text-white" id="password" name="Senha" placeholder="password" required type="password" value>
+              <input class="form-control bg-dark text-white" id="password" name="password" placeholder="password" required type="password" value>
             </div>
             <button type="submit" id="login" class="w-100 btn btn-dark btn-block d-flex align-items-center justify-content-center mb-4">
               Entrar
             </button>
             <p><a href="/register" class="text-reset mt-2" target="_self">Não tem uma conta?</a></p>
-            <a href="https://t.me/DTunnelMod" alt="Canal"><i class="bi bi-telegram btn btn-primary"></i></a>
-            <a href="https://t.me/DTunnelModGroup" alt="Grupo"><i class="bi bi-telegram btn btn-info"></i></a>
           </div>
         </form>
       </div>
@@ -156,8 +154,8 @@
         return;
       }
 
-      const csrfTokenRefresh = getCsrfTokenRefresh(response);
-      if (csrfTokenRefresh) csrfToken = csrfTokenRefresh;
+      const csrfTokenHeader = getCsrfTokenRefresh(response);
+      if (csrfTokenHeader) csrfToken = csrfTokenHeader;
 
       showToastError(data.message);
       closeSpinner();
